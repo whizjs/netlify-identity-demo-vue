@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "netlify-identity-widget": "^1.5.1",
+    "sweetalert2": "^7.29.2",
     "vue": "^2.5.17",
     "vue-router": "^3.0.2",
     "vuex": "^3.0.1"
