@@ -68,7 +68,7 @@
           netlifyIdentity.open(action);
           netlifyIdentity.on(action, user => {
             netlifyIdentity.close();
-            this.updateUserStatus({
+            this.updateUser({
               currentUser: user
             });
           });

@@ -8,10 +8,8 @@
     beforeRouteEnter: (to, from, next) => {
       next(vm => {
         if (vm.$store.state.user.user) {
-          console.log("yes");
           return next();
         } else {
-          console.log("no");
           return next({ name: "Home" });
         }
       });
