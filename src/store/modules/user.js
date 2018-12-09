@@ -1,16 +1,23 @@
 const state = {
-    user: window.localStorage.getItem('gotrue.user')
+    user: window.localStorage.getItem('user')
 };
 
 const getters = {
     getUserStatus: state => !!state.user,
-    getUser: state => state.user
+    getUser: state => JSON.parse(state.user)
 };
 
 //Mutations Must Be Synchronous
 const mutations = {
     setUser: (state, currentUser) => {
-        state.user = currentUser
+        if (!currentUser) {
+            state.user = null;
+            window.localStorage.removeItem('user');
+            return;
+        }
+        let theUser = JSON.stringify(currentUser);
+        state.user = theUser;
+        window.localStorage.setItem('user', theUser);
     }
 };
 

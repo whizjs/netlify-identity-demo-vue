@@ -10,7 +10,7 @@
     <img alt="Vue logo" src="./assets/logo.png">
     <h3>Welcome to Netlify Identity Demo in Vue.js</h3>
     <div v-if="isLoggedIn">
-      <p>Hello, there!</p>
+      <p>Hello {{ username }}</p>
       <p>
         <button @click="triggerNetlifyIdentityAction('logout')">Log Out</button>
       </p>
@@ -60,8 +60,12 @@
     },
     computed: {
       ...mapGetters("user", {
-        isLoggedIn: "getUserStatus"
-      })
+        isLoggedIn: "getUserStatus",
+        user: "getUser"
+      }),
+      username() {
+        return this.user ? this.user.username : ", there!";
+      }
     },
     data: () => {
       return {};
@@ -75,12 +79,15 @@
           netlifyIdentity.open(action);
           netlifyIdentity.on(action, user => {
             netlifyIdentity.close();
+            let currentUser = {
+              username: user.user_metadata.full_name,
+              email: user.email
+            };
             this.updateUser({
-              currentUser: user
+              currentUser: currentUser
             });
           });
         } else if (action == "logout") {
-          //must updateUser first because vuex store is in strict mode
           this.updateUser({
             currentUser: null
           });
