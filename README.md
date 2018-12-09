@@ -1,21 +1,34 @@
-# example-vue
+# Netlify Identity Demo in Vuejs
+
+## Instroduction
+
+Features:
+ - Vue.js 2.x
+ - vuex
+ - vue-router
+ - Netlify Identiy Widget
+ - Netlify (hosting) 
+
+Upgrade:
+ - Vue.js 3.x in 2019
+ - Keep upgrading all libraries when neccessary
 
 ## Project setup
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### For development
 ```
-yarn run serve
+yarn serve
 ```
 
-### Compiles and minifies for production
+### For production
 ```
-yarn run build
+yarn build
 ```
 
 ### Lints and fixes files
 ```
-yarn run lint
+yarn lint
 ```
