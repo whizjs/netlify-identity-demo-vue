@@ -92,10 +92,10 @@ export default {
           netlifyIdentity.close();
         });
       } else if (action == "logout") {
-        (this.currentUser = null),
-          this.updateUser({
-            currentUser: this.currentUser
-          });
+        this.currentUser = null;
+        this.updateUser({
+          currentUser: this.currentUser
+        });
         netlifyIdentity.logout();
         this.$router.push({ name: "Home" });
       }
