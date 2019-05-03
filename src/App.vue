@@ -38,93 +38,94 @@
 </template>
 
 <script>
-  import Home from "@/components/Home";
-  import Public from "@/components/Public";
-  import Protected from "@/components/Protected";
+import Home from "@/components/Home";
+import Public from "@/components/Public";
+import Protected from "@/components/Protected";
 
-  import netlifyIdentity from "netlify-identity-widget";
+import netlifyIdentity from "netlify-identity-widget";
 
-  import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
-  netlifyIdentity.init({
-    APIUrl: "https://netlify-identity-demo-vue.netlify.com/.netlify/identity",
-    logo: true // you can try false and see what happens
-  });
+netlifyIdentity.init({
+  APIUrl: "https://netlify-identity-demo-vue.netlify.com/.netlify/identity",
+  logo: true // you can try false and see what happens
+});
 
-  export default {
-    name: "app",
-    components: {
-      Home,
-      Public,
-      Protected
-    },
-    computed: {
-      ...mapGetters("user", {
-        isLoggedIn: "getUserStatus",
-        user: "getUser"
-      }),
-      username() {
-        return this.user ? this.user.username : ", there!";
-      }
-    },
-    data: () => {
-      return {};
-    },
-    methods: {
-      ...mapActions("user", {
-        updateUser: "updateUser"
-      }),
-      triggerNetlifyIdentityAction(action) {
-        if (action == "login" || action == "signup") {
-          netlifyIdentity.open(action);
-          netlifyIdentity.on(action, user => {
-            netlifyIdentity.close();
-            let currentUser = {
-              username: user.user_metadata.full_name,
-              email: user.email,
-              access_token: user.token.access_token,
-              expires_at: user.token.expires_at,
-              refresh_token: user.token.refresh_token,
-              token_type: user.token.token_type
-            };
-            this.updateUser({
-              currentUser: currentUser
-            });
-          });
-        } else if (action == "logout") {
+export default {
+  name: "app",
+  components: {
+    Home,
+    Public,
+    Protected
+  },
+  computed: {
+    ...mapGetters("user", {
+      isLoggedIn: "getUserStatus",
+      user: "getUser"
+    }),
+    username() {
+      return this.user ? this.user.username : ", there!";
+    }
+  },
+  data: () => ({
+    currentUser: null
+  }),
+  methods: {
+    ...mapActions("user", {
+      updateUser: "updateUser"
+    }),
+    triggerNetlifyIdentityAction(action) {
+      if (action == "login" || action == "signup") {
+        netlifyIdentity.open(action);
+        netlifyIdentity.on(action, user => {
+          this.currentUser = {
+            username: user.user_metadata.full_name,
+            email: user.email,
+            access_token: user.token.access_token,
+            expires_at: user.token.expires_at,
+            refresh_token: user.token.refresh_token,
+            token_type: user.token.token_type
+          };
           this.updateUser({
-            currentUser: null
+            currentUser: this.currentUser
           });
-          netlifyIdentity.logout();
-          this.$router.push({ name: "Home" });
-        }
+          netlifyIdentity.close();
+        });
+      } else if (action == "logout") {
+        (this.currentUser = null),
+          this.updateUser({
+            currentUser: this.currentUser
+          });
+        netlifyIdentity.logout();
+        this.$router.push({ name: "Home" });
       }
     }
-  };
+  }
+};
 </script>
 
 <style>
-  #app {
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 
-  h3 {
-    margin: 40px 0 0;
-  }
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-  a {
-    color: #42b983;
-  }
+h3 {
+  margin: 40px 0 0;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
 </style>
