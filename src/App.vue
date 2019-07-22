@@ -46,6 +46,7 @@ import netlifyIdentity from "netlify-identity-widget";
 
 import { mapGetters, mapActions } from "vuex";
 
+// if you are developing on localhost, call .init() with no params: this triggers the SiteURL request
 netlifyIdentity.init({
   APIUrl: "https://netlify-identity-demo-vue.netlify.com/.netlify/identity",
   logo: true // you can try false and see what happens
